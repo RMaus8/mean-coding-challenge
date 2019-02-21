@@ -31,5 +31,3 @@ const convertData = (studentData) => {
     })
     return {highestScore, studentScores};
 }
-
-console.log(convertData(studentData));
