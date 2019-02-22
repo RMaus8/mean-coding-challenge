@@ -41,15 +41,9 @@ function delayPromise(ms) {
 // Because of the `resolve(2*ms)` in the `delayPromise()` function.
 
 function serialPromise(func, arr) {
-    const promises = arr.map(el => func(el))
-    const hold = Promise.all(promises)
-        .then( values => {
-            return values
-        })
-        .catch( err => {
-            console.log(err)
-        })
-    return hold
+    return arr.reduce((prom, cv) => {
+        return prom.then(results => func(cv).then(newRes => [...results, newRes]))
+    }, Promise.resolve([])).then(val => val)
 }
 
 

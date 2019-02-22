@@ -12,24 +12,17 @@ const studentData = [{
     scores: [80,94,86,91,81]
 }]
 
+//reduced from 18 lines to 10
 const convertData = (studentData) => {
-    const reducer = (acc, cv) => acc + cv
-    let highestScore = {name: '', average: 0}
-    let studentScores = {}
-   studentData.forEach(student => {      
-        let name = student.name
-        studentScores = {...studentScores,
-                          [name]: {
-                            max: Math.max(...student.scores),
-                            min: Math.min(...student.scores),
-                            average: student.scores.reduce(reducer, 0) / student.scores.length
-                          }
-                        }
-        if(studentScores[name].average > highestScore.average) {
-          highestScore = {name: name, average: studentScores[name].average}          
+    const average = (data) => (data.reduce((a,b) => a+b,0) / data.length)
+    const highestScore = [...studentData].sort((a,b) => average(b.scores) - average(a.scores))[0]
+    return [...studentData].map( student => {
+        return {...student,
+            max: Math.max(...student.scores),
+            min: Math.min(...student.scores),
+            average: average(student.scores)
         }
-    })
-    return {highestScore, studentScores};
+    }).concat({highestScore: {...highestScore, average: average(highestScore.scores)}})
 }
 
 console.log(convertData(studentData));
