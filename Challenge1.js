@@ -25,4 +25,14 @@ const convertData = (studentData) => {
     }).concat({highestScore: {...highestScore, average: average(highestScore.scores)}})
 }
 
+//option 2 reduced to 6 lilnes
+const convertData2 = (studentData) => {
+    const average = (data) => (data.reduce((a,b) => a+b,0) / data.length)
+    const highestScore = [...studentData].sort((a,b) => average(b.scores) - average(a.scores))[0]
+    return [...studentData].reduce((prev, curr) => {
+        return prev.concat({name: curr.name, max: Math.max(...curr.scores), min: Math.min(...curr.scores), average: average(curr.scores)})
+    }, [{highestScore: {...highestScore, average: average(highestScore.scores)}}])
+}
+
 console.log(convertData(studentData));
+console.log(convertData2(studentData));
